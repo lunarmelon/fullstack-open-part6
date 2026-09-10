@@ -6,7 +6,7 @@ const AnecdoteList = () => {
 	const { setMessage } = useNotificationActions();
 	const sortedAnecdotes = anecdotes.toSorted((a, b) => b.votes - a.votes);
 
-	const { vote } = useAnecdoteActions();
+	const { vote, remove } = useAnecdoteActions();
 	return (
 		<div>
 			{sortedAnecdotes.map((anecdote) => (
@@ -17,7 +17,7 @@ const AnecdoteList = () => {
 						<button
 							onClick={() => {
 								vote(anecdote.id);
-								setMessage(`You voted "${anecdote.content}"`);
+								setMessage(`you voted '${anecdote.content}'`);
 								setTimeout(() => {
 									setMessage(null);
 								}, 5000);
@@ -25,6 +25,9 @@ const AnecdoteList = () => {
 						>
 							vote
 						</button>
+						{anecdote.votes === 0 && (
+							<button onClick={() => remove(anecdote.id)}>delete</button>
+						)}
 					</div>
 				</div>
 			))}
