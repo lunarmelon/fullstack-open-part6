@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import anecdoteService from "./services/anecdote";
 
 const anecdotesAtStart = [
 	"If it hurts, do it more often",
@@ -21,18 +22,27 @@ const useAnecdoteStore = create((set) => ({
 	anecdotes: [],
 	filter: "",
 	actions: {
-		add: (anecdote) =>
-			set((state) => ({ anecdotes: state.anecdotes.concat(anecdote) })),
-		vote: (id) =>
+		add: async (content) => {
+			const newAnecdote = await anecdoteService.createNew(content);
+			set((state) => ({ anecdotes: state.anecdotes.concat(newAnecdote) }));
+		},
+		vote: async (id) => {
+			const anecdote = useAnecdoteStore
+				.getState()
+				.anecdotes.find((a) => a.id === id);
+			const updated = await anecdoteService.update(id, {
+				...anecdote,
+				votes: anecdote.votes + 1,
+			});
 			set((state) => ({
-				anecdotes: state.anecdotes.map((anecdote) =>
-					anecdote.id === id
-						? { ...anecdote, votes: anecdote.votes + 1 }
-						: anecdote,
-				),
-			})),
+				anecdotes: state.anecdotes.map((a) => (a.id === id ? updated : a)),
+			}));
+		},
 		setFilter: (value) => set(() => ({ filter: value })),
-		initialize: (anecdotes) => set(() => ({ anecdotes })),
+		initialize: async () => {
+			const anecdotes = await anecdoteService.getAll();
+			set(() => ({ anecdotes }));
+		},
 	},
 }));
 
