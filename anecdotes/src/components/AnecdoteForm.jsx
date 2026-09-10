@@ -1,14 +1,14 @@
+import anecdoteService from "../services/anecdote";
 import { useAnecdoteActions } from "../store";
 
 const AnecdoteForm = () => {
-	const getId = () => (100000 * Math.random()).toFixed(0);
-
 	const { add } = useAnecdoteActions();
 
-	const addAnecdote = (e) => {
+	const addAnecdote = async (e) => {
 		e.preventDefault();
 		const content = e.target.anecdote.value;
-		add({ id: getId(), content, votes: 0 });
+		const newAnecdote = await anecdoteService.createNew(content);
+		add(newAnecdote);
 		e.target.reset();
 	};
 
