@@ -60,3 +60,26 @@ describe("useAnecdotes", () => {
 		expect(result.current[2].content).toBe("B");
 	});
 });
+
+describe("useAnecdotes filtering", () => {
+	const anecdotes = [
+		{ id: 1, content: "Testing a note", votes: 11 },
+		{ id: 2, content: "Voting a note", votes: 3 },
+		{ id: 3, content: "Law", votes: 39 },
+	];
+
+	beforeEach(() => {
+		useAnecdoteStore.setState({ anecdotes });
+	});
+
+	it("returns all notes with no filter", () => {
+		const { result } = renderHook(() => useAnecdotes());
+		expect(result.current).toHaveLength(3);
+	});
+
+	it("filters important notes", () => {
+		useAnecdoteStore.setState({ anecdotes, filter: "note" });
+		const { result } = renderHook(() => useAnecdotes());
+		expect(result.current).toHaveLength(2);
+	});
+});
