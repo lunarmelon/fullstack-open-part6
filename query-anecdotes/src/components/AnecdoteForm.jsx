@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import { useAnecdotes } from "../hooks/useAnecdotes";
-import NotificationContext from "../NotificationContext";
+import useNotification from "../hooks/useNotification";
 
 const AnecdoteForm = () => {
 	const { addAnecdote: addAnecdoteToServer } = useAnecdotes();
-	const { setNotification } = useContext(NotificationContext);
+	const { setNotification } = useNotification();
 
 	const onCreate = async (event) => {
 		event.preventDefault();

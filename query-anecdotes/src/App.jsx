@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
 import { useAnecdotes } from "./hooks/useAnecdotes";
-import NotificationContext from "./NotificationContext";
+import useNotification from "./hooks/useNotification";
 
 const App = () => {
-	const { setNotification } = useContext(NotificationContext);
+	const { setNotification } = useNotification();
 	const { anecdotes, isPending, isError, voteAnecdote } = useAnecdotes();
 
 	if (isPending) {
@@ -29,7 +28,7 @@ const App = () => {
 						<button
 							onClick={() => {
 								voteAnecdote(anecdote);
-								setNotification(`anecdote ${anecdote.content} voted`);
+								setNotification(`anecdote "${anecdote.content}" voted`);
 								setTimeout(() => {
 									setNotification(null);
 								}, 5000);
