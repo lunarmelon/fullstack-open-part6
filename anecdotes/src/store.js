@@ -18,7 +18,7 @@ const asObject = (anecdote) => ({
 	votes: 0,
 });
 
-const useAnecdoteStore = create((set) => ({
+const useAnecdoteStore = create((set, get) => ({
 	anecdotes: [],
 	filter: "",
 	actions: {
