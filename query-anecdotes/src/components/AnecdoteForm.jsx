@@ -10,11 +10,18 @@ const AnecdoteForm = () => {
 		event.preventDefault();
 		const content = event.target.anecdote.value;
 		event.target.reset();
-		addAnecdoteToServer(content);
-		setNotification(`anecdote ${content} created`);
-		setTimeout(() => {
-			setNotification(null);
-		}, 5000);
+		if (content.length < 5) {
+			setNotification("too short anecdote, must have length 5 or more");
+			setTimeout(() => {
+				setNotification(null);
+			}, 5000);
+		} else {
+			addAnecdoteToServer(content);
+			setNotification(`anecdote ${content} created`);
+			setTimeout(() => {
+				setNotification(null);
+			}, 5000);
+		}
 	};
 
 	return (
