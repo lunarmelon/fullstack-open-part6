@@ -1,13 +1,20 @@
+import { useContext } from "react";
 import { useAnecdotes } from "../hooks/useAnecdotes";
+import NotificationContext from "../NotificationContext";
 
 const AnecdoteForm = () => {
 	const { addAnecdote: addAnecdoteToServer } = useAnecdotes();
+	const { setNotification } = useContext(NotificationContext);
 
 	const onCreate = async (event) => {
 		event.preventDefault();
 		const content = event.target.anecdote.value;
 		event.target.reset();
 		addAnecdoteToServer(content);
+		setNotification(`anecdote ${content} created`);
+		setTimeout(() => {
+			setNotification(null);
+		}, 5000);
 	};
 
 	return (
@@ -22,4 +29,3 @@ const AnecdoteForm = () => {
 };
 
 export default AnecdoteForm;
-
