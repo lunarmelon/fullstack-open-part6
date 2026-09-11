@@ -67,3 +67,5 @@ export const useAnecdotes = () => {
 export const useFilter = () => useAnecdoteStore((state) => state.filter);
 export const useAnecdoteActions = () =>
 	useAnecdoteStore((state) => state.actions);
+
+export default useAnecdoteStore;
